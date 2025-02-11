@@ -5,6 +5,7 @@ from engines.gasoline_engine import GasolineEngine
 from vehicles.car import Car
 from vehicles.motorcycle import Motorcycle
 from vehicles.bicycle import Bicycle
+import unittest
 
 app = Flask(__name__)
 
@@ -51,4 +52,23 @@ def index():
     return render_template('index.html', vehicle_type=vehicle_type, engine_type=engine_type, engine_status=engine_status)
 
 if __name__ == '__main__':
-    app.run(debug=True) 
+    app.run(debug=True)
+
+class TestElectricEngine(unittest.TestCase):
+    def setUp(self):
+        self.engine = ElectricEngine()
+
+    def test_initial_state(self):
+        self.assertEqual(self.engine.get_status(), "Apagado")
+
+    def test_turn_on(self):
+        self.engine.turn_on()
+        self.assertEqual(self.engine.get_status(), "Encendido")
+
+    def test_turn_off(self):
+        self.engine.turn_on()
+        self.engine.turn_off()
+        self.assertEqual(self.engine.get_status(), "Apagado")
+
+if __name__ == '__main__':
+    unittest.main()

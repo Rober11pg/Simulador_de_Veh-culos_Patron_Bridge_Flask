@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Simulador de Vehículos</title>
+    <style>
+        /* Estilos para los elementos del formulario */
+        select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        select:hover {
+            border-color: #007BFF;
+            background-color: #f0f8ff;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+
+        .status-message {
+            font-size: 18px;
+            color: #333;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Simulador de Vehículos</h1>
+        <!-- Formulario para seleccionar vehículo y motor -->
+        <form id="vehicleForm" onsubmit="return false;">
+            <div class="selection-container">
+                <div class="vehicle-selection">
+                    <label for="vehicle">Seleccionar tipo de vehículo:</label>
+                    <!-- Selección de tipo de vehículo -->
+                    <select name="vehicle" id="vehicle" onchange="updateStatusMessage();">
+                        <option value="Automóvil">Automóvil</option>
+                        <option value="Motocicleta">Motocicleta</option>
+                        <option value="Bicicleta">Bicicleta</option>
+                    </select>
+                </div>
+
+                <div class="engine-selection">
+                    <label for="engine">Seleccionar tipo de motor:</label>
+                    <!-- Selección de tipo de motor -->
+                    <select name="engine" id="engine" onchange="updateStatusMessage();">
+                        <option value="Eléctrico">Eléctrico</option>
+                        <option value="Diésel">Diésel</option>
+                        <option value="Gasolina">Gasolina</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="button-container">
+                <!-- Botones para encender y apagar el motor -->
+                <button type="button" onclick="setEngineStatus('on')">Encender Motor</button>
+                <button type="button" onclick="setEngineStatus('off')">Apagar Motor</button>
+            </div>
+        </form>
+
+        <!-- Mensaje de estado del vehículo y motor -->
+        <p id="statusMessage" class="status-message">
+            Seleccione un vehículo y un motor para comenzar.
+        </p>
+    </div>
+
+    <script>
+        // Variable para almacenar el estado del motor
+        let engineStatus = 'off';
+
+        // Función para cambiar el estado del motor
+        function setEngineStatus(status) {
+            engineStatus = status;
+            updateStatusMessage();
+        }
+
+        // Función para actualizar el mensaje de estado
+        function updateStatusMessage() {
+            const vehicleSelect = document.getElementById('vehicle');
+            const engineSelect = document.getElementById('engine');
+            const statusMessage = document.getElementById('statusMessage');
+
+            const vehicle = vehicleSelect.value;
+            const engine = engineSelect.value;
+            const status = engineStatus === 'on' ? 'funcionando' : 'apagado';
+
+            // Mensajes personalizados para cada combinación de vehículo y motor
+            const messages = {
+                'Automóvil': {
+                    'Eléctrico': `El automóvil eléctrico está ${status}.`,
+                    'Diésel': `El automóvil diésel está ${status}.`,
+                    'Gasolina': `El automóvil de gasolina está ${status}.`
+                },
+                'Motocicleta': {
+                    'Eléctrico': `La motocicleta eléctrica está ${status}.`,
+                    'Diésel': `La motocicleta diésel está ${status}.`,
+                    'Gasolina': `La motocicleta de gasolina está ${status}.`
+                },
+                'Bicicleta': {
+                    'Eléctrico': `La bicicleta eléctrica está ${status}.`,
+                    'Diésel': `La bicicleta diésel está ${status}.`,
+                    'Gasolina': `La bicicleta de gasolina está ${status}.`
+                }
+            };
+
+            // Actualizar el mensaje de estado
+            statusMessage.textContent = messages[vehicle][engine];
+        }
+    </script>
+</body>
+</html>
